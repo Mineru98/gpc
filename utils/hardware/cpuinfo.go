@@ -1,4 +1,4 @@
-package main
+package hardware
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/jaypipes/ghw"
 )
 
-func cpuInfo() {
+func CpuInfo() {
 	cpu, err := ghw.CPU()
 	if err != nil {
 		fmt.Printf("Error getting CPU info: %v", err)

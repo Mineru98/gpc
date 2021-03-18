@@ -16,6 +16,7 @@
 
 bin
 pkg
+dist
 src/*
 !src/go.mod
 !src/go.sum

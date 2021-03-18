@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 
+	"./utils/network"
 	"github.com/akamensky/argparse"
 )
 
 func main() {
-	parser := argparse.NewParser("GPC", "Golang Process Commander")
+	parser := argparse.NewParser("gpc", "Golang Process Commander")
 
 	runCmd := parser.NewCommand("run", "Run Service")
 	stopCmd := parser.NewCommand("stop", "Stop Service")
@@ -39,11 +41,17 @@ func main() {
 			Help:     "Connection timeout in ms. Should be less than check 'period'",
 			Default:  500,
 		})
-	periodArg := pingCmd.Int("P", "period",
+	pingPeriodArg := pingCmd.Int("P", "period",
 		&argparse.Options{
 			Required: false,
 			Help:     "Period of check in ms",
 			Default:  1000,
+		})
+	pingLimitCountArg := pingCmd.Int("n", "count",
+		&argparse.Options{
+			Required: false,
+			Help:     "Ping Count",
+			Default:  4,
 		})
 
 	versionArg := parser.Flag("v", "version",
@@ -52,27 +60,24 @@ func main() {
 			Help:     "Check Version",
 		})
 
-	fmt.Println(*versionArg)
+	err := parser.Parse(os.Args)
+	if err != nil {
+		fmt.Print(parser.Usage(err))
+		return
+	}
+
 	if runCmd.Happened() {
 		fmt.Println(*modeArg)
 		fmt.Println("Start Service")
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
 	} else if pingCmd.Happened() {
-		fmt.Println("Add Process")
-		fmt.Println(*pingAddressArg)
-		fmt.Println(*pingPortArg)
-		fmt.Println(*pingTimeoutArg)
-		fmt.Println(*periodArg)
-		// ping(pingAddressArg, pingPortArg, pingTimeoutArg, periodArg)
+		network.Ping(*pingAddressArg, *pingPortArg, *pingTimeoutArg, *pingPeriodArg, *pingLimitCountArg)
 	} else if addCmd.Happened() {
 		fmt.Println("Add Process")
 	} else if listCmd.Happened() {
 		fmt.Println("List Process")
 	} else if *versionArg {
 		fmt.Println("0.0.1")
-	} else {
-		err := fmt.Errorf("bag arguments")
-		fmt.Print(parser.Usage(err))
 	}
 }

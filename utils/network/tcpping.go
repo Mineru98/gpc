@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func tryPort(network string, seq uint64, timeout time.Duration) {
+func tryPort(network string, seq int, timeout time.Duration) {
 	startTime := time.Now()
 	conn, err := net.DialTimeout("tcp", network, timeout)
 	endTime := time.Now()
@@ -20,8 +20,8 @@ func tryPort(network string, seq uint64, timeout time.Duration) {
 	}
 }
 
-func ping(ipArg string, portArg int, timeoutArg int, periodArg int) {
-	var seqNumber uint64 = 0
+func Ping(ipArg string, portArg int, timeoutArg int, periodArg int, limitCount int) {
+	var seqNumber int = 0
 	var network = fmt.Sprintf("%s:%d", ipArg, portArg)
 	var timeout = time.Duration(timeoutArg) * time.Millisecond
 	var period = time.Duration(periodArg) * time.Millisecond
@@ -34,7 +34,7 @@ func ping(ipArg string, portArg int, timeoutArg int, periodArg int) {
 	ticker := time.NewTicker(period)
 	quit := make(chan interface{})
 
-	for ; ; seqNumber++ {
+	for seqNumber = 0; seqNumber < limitCount; seqNumber++ {
 		select {
 		case <-ticker.C:
 			tryPort(network, seqNumber, timeout)
@@ -43,7 +43,4 @@ func ping(ipArg string, portArg int, timeoutArg int, periodArg int) {
 			return
 		}
 	}
-}
-
-func init() {
 }
