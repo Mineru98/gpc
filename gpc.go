@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
+	"./env"
 	"./utils/network"
 	"github.com/akamensky/argparse"
 )
@@ -69,6 +71,10 @@ func main() {
 	if runCmd.Happened() {
 		fmt.Println(*modeArg)
 		fmt.Println("Start Service")
+		pid := os.Getpid()
+		parentpid := os.Getppid()
+		fmt.Printf("The parent process id of %v is %v\n", pid, parentpid)
+		time.Sleep(time.Second * 30)
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
 	} else if pingCmd.Happened() {
@@ -78,6 +84,6 @@ func main() {
 	} else if listCmd.Happened() {
 		fmt.Println("List Process")
 	} else if *versionArg {
-		fmt.Println("0.0.1")
+		fmt.Println(env.Version)
 	}
 }

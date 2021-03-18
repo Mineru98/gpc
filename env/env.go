@@ -1,0 +1,3 @@
+package env
+
+const Version = "0.0.1"
