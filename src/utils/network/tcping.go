@@ -20,9 +20,9 @@ func tryPort(network string, seq uint64, timeout time.Duration) {
 	}
 }
 
-func ping(ipArg string, timeoutArg int, periodArg int) {
+func ping(ipArg string, portArg int, timeoutArg int, periodArg int) {
 	var seqNumber uint64 = 0
-	var network = fmt.Sprintf("%s:%d", ipArg, 80)
+	var network = fmt.Sprintf("%s:%d", ipArg, portArg)
 	var timeout = time.Duration(timeoutArg) * time.Millisecond
 	var period = time.Duration(periodArg) * time.Millisecond
 
