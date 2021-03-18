@@ -64,6 +64,7 @@ func main() {
 		fmt.Println(*pingPortArg)
 		fmt.Println(*pingTimeoutArg)
 		fmt.Println(*periodArg)
+		// ping(pingAddressArg, pingPortArg, pingTimeoutArg, periodArg)
 	} else if addCmd.Happened() {
 		fmt.Println("Add Process")
 	} else if listCmd.Happened() {

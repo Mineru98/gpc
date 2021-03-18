@@ -44,3 +44,6 @@ func ping(ipArg string, portArg int, timeoutArg int, periodArg int) {
 		}
 	}
 }
+
+func init() {
+}
