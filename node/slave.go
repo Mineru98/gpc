@@ -1,6 +1,7 @@
 package node
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -21,7 +22,7 @@ func SlaveMode(slave Slave, ip string, port string) {
 	if nil != err {
 		log.Fatalf("failed to connect to server")
 	}
-
+	fmt.Println(ip)
 	for {
 		conn.Write([]byte("ping from " + ip + ":" + port))
 		time.Sleep(time.Duration(3) * time.Second)
@@ -29,5 +30,5 @@ func SlaveMode(slave Slave, ip string, port string) {
 }
 
 func init() {
-
+	fmt.Println("Started GPC Slave Mode Service")
 }

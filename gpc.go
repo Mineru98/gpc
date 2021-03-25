@@ -103,7 +103,6 @@ func main() {
 		case "Master", "master", "M", "m":
 			node.MasterMode(masterNode, *modeIpAddressArg, *modePortArg)
 		case "Slave", "slave", "S", "s":
-			fmt.Println("Started GPC Slave Mode Service")
 			node.SlaveMode(slaveNode, *modeIpAddressArg, *modePortArg)
 		}
 	} else if stopCmd.Happened() {
