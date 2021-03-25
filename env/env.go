@@ -22,17 +22,13 @@ var PortM string = "21324"
 var PortS string = "21325"
 
 func init() {
-	addrs, err := net.InterfaceAddrs()
+	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		os.Stderr.WriteString("Oops: " + err.Error() + "\n")
-		os.Exit(1)
+		log.Fatal(err)
 	}
+	defer conn.Close()
 
-	for _, a := range addrs {
-		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if ipnet.IP.To4() != nil {
-				Ip = ipnet.IP.String()
-			}
-		}
-	}
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+	Ip = localAddr.IP.String()
 }
