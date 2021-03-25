@@ -9,6 +9,9 @@ import (
 const BuildVersion = "0.0"
 const BuildCode = "1"
 
+// Debugging mode
+var Debug bool = false
+
 // Current Ip
 var Ip string = "127.0.0.1"
 

@@ -2,20 +2,29 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
 
-	"./env"
-	"./node"
-	"./utils/network"
+	"../env"
+	"../utils/network"
 	"github.com/akamensky/argparse"
 )
 
-var masterNode node.Master
-
-var slaveNode node.Slave
+// 동일한 프로세스 실행시 실행 중지
+func checkDupleProcess(mode string) bool {
+	switch mode {
+	case "M", "m", "Master", "master":
+		return false
+	case "S", "s", "Slave", "slave":
+		return false
+	}
+	return true
+}
 
 func main() {
-	parser := argparse.NewParser("gpc", "Golang Process Commander")
+	parser := argparse.NewParser("GPC", "Golang Process Commander")
 
 	runCmd := parser.NewCommand("run", "Run Service")
 	stopCmd := parser.NewCommand("stop", "Stop Service")
@@ -83,6 +92,13 @@ func main() {
 			Help:     "Print Apply Slave List from Master",
 		})
 
+	debugArg := parser.Flag("d", "debug",
+		&argparse.Options{
+			Required: false,
+			Help:     "Debugging mode",
+			Default:  false,
+		})
+
 	versionArg := parser.Flag("v", "version",
 		&argparse.Options{
 			Required: false,
@@ -95,15 +111,61 @@ func main() {
 		return
 	}
 
+	// 디버그 모드 활성화 / 비활성화
+	env.Debug = *debugArg
+
 	if runCmd.Happened() {
-		pid := os.Getpid()
-		parentpid := os.Getppid()
-		fmt.Printf("The parent process id of %v is %v\n", pid, parentpid)
-		switch *modeArg {
-		case "Master", "master", "M", "m":
-			node.MasterMode(masterNode, *modeIpAddressArg, *modePortArg)
-		case "Slave", "slave", "S", "s":
-			node.SlaveMode(slaveNode, env.Ip, env.PortS, *modeIpAddressArg, *modePortArg)
+		if !checkDupleProcess(*modeArg) {
+			switch *modeArg {
+			case "Master", "master", "M", "m":
+				if env.Debug {
+					runCmd := exec.Command("go", "run", "cmd/master.go", "run")
+					stdout, err := runCmd.StdoutPipe()
+
+					err = runCmd.Start()
+					if err != nil {
+						log.Printf("Command finished with error: %v", err)
+					}
+
+					bResult, _ := ioutil.ReadAll(stdout)
+					fmt.Println(string(bResult))
+				} else {
+					runCmd := exec.Command("master", "run")
+					stdout, err := runCmd.StdoutPipe()
+
+					err = runCmd.Start()
+					if err != nil {
+						log.Printf("Command finished with error: %v", err)
+					}
+
+					bResult, _ := ioutil.ReadAll(stdout)
+					fmt.Println(string(bResult))
+				}
+			case "Slave", "slave", "S", "s":
+				if env.Debug {
+					runCmd := exec.Command("go", "run", "cmd/slave.go", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+					stdout, err := runCmd.StdoutPipe()
+
+					err = runCmd.Start()
+					if err != nil {
+						log.Printf("Command finished with error: %v", err)
+					}
+
+					bResult, _ := ioutil.ReadAll(stdout)
+					fmt.Println(string(bResult))
+				} else {
+					runCmd := exec.Command("slave", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+					stdout, err := runCmd.StdoutPipe()
+
+					err = runCmd.Start()
+					if err != nil {
+						log.Printf("Command finished with error: %v", err)
+					}
+
+					bResult, _ := ioutil.ReadAll(stdout)
+					fmt.Println(string(bResult))
+				}
+			}
 		}
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
