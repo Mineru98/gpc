@@ -3,12 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
-	"./env"
+	"./node"
 	"./utils/network"
+	"github.com/Mineru98/gpc"
 	"github.com/akamensky/argparse"
 )
+
+func slaveMode(connInfo string) {
+	network.Client(connInfo)
+}
+
+var masterNode master.Master
+
+// var slaveNode Slave
 
 func main() {
 	parser := argparse.NewParser("gpc", "Golang Process Commander")
@@ -24,6 +32,18 @@ func main() {
 		&argparse.Options{
 			Required: true,
 			Help:     "select GCP operation mode",
+		})
+	modeIpAddressArg := runCmd.String("a", "address",
+		&argparse.Options{
+			Required: false,
+			Help:     "Setting Master Ip Address",
+			Default:  env.Ip,
+		})
+	modePortArg := runCmd.String("p", "port",
+		&argparse.Options{
+			Required: false,
+			Help:     "Setting Master Port",
+			Default:  env.PortM,
 		})
 
 	pingAddressArg := pingCmd.String("a", "address",
@@ -56,6 +76,17 @@ func main() {
 			Default:  4,
 		})
 
+	slaveListArg := listCmd.Flag("s", "slave",
+		&argparse.Options{
+			Required: false,
+			Help:     "Print Apply Process List from Slave",
+		})
+	masterListArg := listCmd.Flag("m", "master",
+		&argparse.Options{
+			Required: false,
+			Help:     "Print Apply Slave List from Master",
+		})
+
 	versionArg := parser.Flag("v", "version",
 		&argparse.Options{
 			Required: false,
@@ -69,12 +100,17 @@ func main() {
 	}
 
 	if runCmd.Happened() {
-		fmt.Println(*modeArg)
-		fmt.Println("Start Service")
 		pid := os.Getpid()
 		parentpid := os.Getppid()
 		fmt.Printf("The parent process id of %v is %v\n", pid, parentpid)
-		time.Sleep(time.Second * 30)
+		switch *modeArg {
+		case "Master", "master", "M", "m":
+			fmt.Println("Started GPC Master Mode Service")
+			master.Mode(masterNode, *modeIpAddressArg, *modePortArg)
+		case "Slave", "slave", "S", "s":
+			fmt.Println("Started GPC Slave Mode Service")
+			slaveMode(*modeIpAddressArg + ":" + *modePortArg)
+		}
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
 	} else if pingCmd.Happened() {
@@ -83,7 +119,14 @@ func main() {
 		fmt.Println("Add Process")
 	} else if listCmd.Happened() {
 		fmt.Println("List Process")
+		if *masterListArg == true && *slaveListArg == false {
+			fmt.Println("m")
+		} else if *masterListArg == false && *slaveListArg == true {
+			fmt.Println("s")
+		} else {
+			fmt.Println("no")
+		}
 	} else if *versionArg {
-		fmt.Println(env.Version)
+		fmt.Println(env.BuildVersion + "." + env.BuildCode)
 	}
 }
