@@ -130,7 +130,7 @@ func main() {
 					bResult, _ := ioutil.ReadAll(stdout)
 					fmt.Println(string(bResult))
 				} else {
-					runCmd := exec.Command("./master", "run")
+					runCmd := exec.Command("master.bat", "run")
 					stdout, err := runCmd.StdoutPipe()
 
 					err = runCmd.Start()
@@ -154,7 +154,7 @@ func main() {
 					bResult, _ := ioutil.ReadAll(stdout)
 					fmt.Println(string(bResult))
 				} else {
-					runCmd := exec.Command("./slave", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+					runCmd := exec.Command("slave.bat", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
 					stdout, err := runCmd.StdoutPipe()
 
 					err = runCmd.Start()
