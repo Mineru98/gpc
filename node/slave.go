@@ -17,9 +17,11 @@ type Slave struct {
 	port string
 }
 
-func SlaveMode(slave Slave, ip string, port string) {
+func SlaveMode(slave Slave, ip, port, t_ip, t_port string) {
 	fmt.Println("Started GPC Slave Mode Service")
-	conn, err := net.Dial("tcp", ip+":"+port)
+	slave.ip = ip
+	slave.port = port
+	conn, err := net.Dial("tcp", t_ip+":"+t_port)
 	if nil != err {
 		log.Fatalf("failed to connect to server")
 	}

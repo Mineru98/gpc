@@ -103,7 +103,7 @@ func main() {
 		case "Master", "master", "M", "m":
 			node.MasterMode(masterNode, *modeIpAddressArg, *modePortArg)
 		case "Slave", "slave", "S", "s":
-			node.SlaveMode(slaveNode, *modeIpAddressArg, *modePortArg)
+			node.SlaveMode(slaveNode, env.Ip, env.PortS, *modeIpAddressArg, *modePortArg)
 		}
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
