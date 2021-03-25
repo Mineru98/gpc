@@ -18,6 +18,7 @@ type Master struct {
 }
 
 func MasterMode(master Master, ip string, port string) {
+	fmt.Println("Started GPC Master Mode Service")
 	master.ip = ip
 	master.port = port
 	l, err := net.Listen("tcp", ip+":"+port)
@@ -38,5 +39,4 @@ func MasterMode(master Master, ip string, port string) {
 }
 
 func init() {
-	fmt.Println("Started GPC Master Mode Service")
 }
