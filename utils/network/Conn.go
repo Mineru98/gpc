@@ -4,7 +4,6 @@ import (
 	"io"
 	"log"
 	"net"
-	"time"
 )
 
 func ConnHandler(conn net.Conn) {
@@ -23,17 +22,5 @@ func ConnHandler(conn net.Conn) {
 			data := recvBuf[:n]
 			log.Println(string(data))
 		}
-	}
-}
-
-func Client(connInfo string) {
-	conn, err := net.Dial("tcp", connInfo)
-	if nil != err {
-		log.Fatalf("failed to connect to server")
-	}
-
-	for {
-		conn.Write([]byte("ping"))
-		time.Sleep(time.Duration(3) * time.Second)
 	}
 }

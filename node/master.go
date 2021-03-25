@@ -1,4 +1,4 @@
-package master
+package node
 
 import (
 	"fmt"
@@ -13,12 +13,11 @@ type MasterNode interface {
 }
 
 type Master struct {
-	id   int
 	ip   string
 	port string
 }
 
-func Mode(master Master, ip string, port string) {
+func MasterMode(master Master, ip string, port string) {
 	master.ip = ip
 	master.port = port
 	l, err := net.Listen("tcp", ip+":"+port)
@@ -39,5 +38,5 @@ func Mode(master Master, ip string, port string) {
 }
 
 func init() {
-	fmt.Println("Master Node Init")
+	fmt.Println("Started GPC Master Mode Service")
 }

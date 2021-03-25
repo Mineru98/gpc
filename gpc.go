@@ -4,19 +4,15 @@ import (
 	"fmt"
 	"os"
 
+	"./env"
 	"./node"
 	"./utils/network"
-	"github.com/Mineru98/gpc"
 	"github.com/akamensky/argparse"
 )
 
-func slaveMode(connInfo string) {
-	network.Client(connInfo)
-}
+var masterNode node.Master
 
-var masterNode master.Master
-
-// var slaveNode Slave
+var slaveNode node.Slave
 
 func main() {
 	parser := argparse.NewParser("gpc", "Golang Process Commander")
@@ -105,11 +101,10 @@ func main() {
 		fmt.Printf("The parent process id of %v is %v\n", pid, parentpid)
 		switch *modeArg {
 		case "Master", "master", "M", "m":
-			fmt.Println("Started GPC Master Mode Service")
-			master.Mode(masterNode, *modeIpAddressArg, *modePortArg)
+			node.MasterMode(masterNode, *modeIpAddressArg, *modePortArg)
 		case "Slave", "slave", "S", "s":
 			fmt.Println("Started GPC Slave Mode Service")
-			slaveMode(*modeIpAddressArg + ":" + *modePortArg)
+			node.SlaveMode(slaveNode, *modeIpAddressArg, *modePortArg)
 		}
 	} else if stopCmd.Happened() {
 		fmt.Println("Stop Service")
