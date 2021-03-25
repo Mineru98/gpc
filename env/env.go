@@ -1,8 +1,8 @@
 package env
 
 import (
+	"log"
 	"net"
-	"os"
 )
 
 // Currrent Build Info
