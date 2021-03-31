@@ -25,7 +25,7 @@ func main() {
 	}
 
 	if runCmd.Happened() {
-		node.MasterMode(masterNode, env.Ip, env.PortM)
+		node.MasterMode(masterNode, env.Ip, env.Port)
 	} else if listCmd.Happened() {
 		fmt.Println("List Process")
 	}

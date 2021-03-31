@@ -56,3 +56,14 @@ cd ..
 ```shell
 go build -o ./dist/gpc gpc.go
 ```
+
+## gopls setting
+```json
+{
+    ...,
+    "gopls": {
+        "build.experimentalWorkspaceModule": true,
+        "build.expandWorkspaceToModule": false,
+    }
+}
+```

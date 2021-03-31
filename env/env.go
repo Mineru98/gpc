@@ -16,10 +16,7 @@ var Debug bool = false
 var Ip string = "127.0.0.1"
 
 // GPC Master Mode Port
-var PortM string = "21324"
-
-// GPC Slave Mode Port
-var PortS string = "21325"
+var Port string = "21324"
 
 func init() {
 	conn, err := net.Dial("udp", "8.8.8.8:80")

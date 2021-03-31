@@ -37,7 +37,7 @@ func main() {
 	}
 
 	if runCmd.Happened() {
-		node.SlaveMode(slaveNode, env.Ip, env.PortS, *modeIpAddressArg, *modePortArg)
+		node.SlaveMode(slaveNode, env.Ip, env.Port, *modeIpAddressArg, *modePortArg)
 	} else if addCmd.Happened() {
 		fmt.Println("Add Process")
 	} else if listCmd.Happened() {

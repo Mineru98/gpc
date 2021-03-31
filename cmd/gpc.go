@@ -50,7 +50,7 @@ func main() {
 		&argparse.Options{
 			Required: false,
 			Help:     "Setting Master Port",
-			Default:  env.PortM,
+			Default:  env.Port,
 		})
 
 	pingAddressArg := pingCmd.String("a", "address",
