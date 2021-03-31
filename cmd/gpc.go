@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"runtime"
 
 	"../env"
 	"../utils/network"
@@ -119,51 +120,104 @@ func main() {
 			switch *modeArg {
 			case "Master", "master", "M", "m":
 				if env.Debug {
-					runCmd := exec.Command("go", "run", "cmd/master.go", "run")
-					stdout, err := runCmd.StdoutPipe()
+					if runtime.GOOS == "Windows" {
+						runCmd := exec.Command("go", "run", "cmd/master.go", "run")
+						stdout, err := runCmd.StdoutPipe()
 
-					err = runCmd.Start()
-					if err != nil {
-						log.Printf("Command finished with error: %v", err)
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
+					} else {
+						exec.Command("echo test")
+						runCmd := exec.Command("nohup", "./master-cmd.sh", "run", ">", "/dev/null", "2>&1", "&")
+						stdout, err := runCmd.StdoutPipe()
+
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
 					}
-
-					bResult, _ := ioutil.ReadAll(stdout)
-					fmt.Println(string(bResult))
 				} else {
-					runCmd := exec.Command("cmd.exe", "/c", "master.vbs", "run")
-					stdout, err := runCmd.StdoutPipe()
+					if runtime.GOOS == "Windows" {
+						runCmd := exec.Command("cmd.exe", "/c", "master.vbs", "run")
+						stdout, err := runCmd.StdoutPipe()
 
-					err = runCmd.Start()
-					if err != nil {
-						log.Printf("Command finished with error: %v", err)
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
+					} else {
+						runCmd := exec.Command("nohup", "./master", ">", "/dev/null", "2>&1", "&")
+						stdout, err := runCmd.StdoutPipe()
+
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
 					}
-
-					bResult, _ := ioutil.ReadAll(stdout)
-					fmt.Println(string(bResult))
 				}
 			case "Slave", "slave", "S", "s":
 				if env.Debug {
-					runCmd := exec.Command("go", "run", "cmd/slave.go", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
-					stdout, err := runCmd.StdoutPipe()
+					if runtime.GOOS == "Windows" {
+						runCmd := exec.Command("go", "run", "cmd/slave.go", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+						stdout, err := runCmd.StdoutPipe()
 
-					err = runCmd.Start()
-					if err != nil {
-						log.Printf("Command finished with error: %v", err)
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
+					} else {
+						runCmd := exec.Command("nohup", "./slave-cmd.sh", "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
+						stdout, err := runCmd.StdoutPipe()
+
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
 					}
-
-					bResult, _ := ioutil.ReadAll(stdout)
-					fmt.Println(string(bResult))
 				} else {
-					runCmd := exec.Command("cmd.exe", "/c", "slave.vbs", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
-					stdout, err := runCmd.StdoutPipe()
+					if runtime.GOOS == "Windows" {
+						runCmd := exec.Command("cmd.exe", "/c", "slave.vbs", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+						stdout, err := runCmd.StdoutPipe()
 
-					err = runCmd.Start()
-					if err != nil {
-						log.Printf("Command finished with error: %v", err)
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
+					} else {
+						runCmd := exec.Command("nohup", "./slave", "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
+						stdout, err := runCmd.StdoutPipe()
+
+						err = runCmd.Start()
+						if err != nil {
+							log.Printf("Command finished with error: %v", err)
+						}
+
+						bResult, _ := ioutil.ReadAll(stdout)
+						fmt.Println(string(bResult))
 					}
-
-					bResult, _ := ioutil.ReadAll(stdout)
-					fmt.Println(string(bResult))
 				}
 			}
 		}
