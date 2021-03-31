@@ -10,17 +10,12 @@ import (
 )
 
 const (
-	// Verify that this generated code is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
-	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// This is a compile-time assertion that a sufficiently up-to-date version
-// of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
-// The request message containing the user's name.
 type HelloRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -56,7 +51,6 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
 func (*HelloRequest) Descriptor() ([]byte, []int) {
 	return file_examples_helloworld_helloworld_helloworld_proto_rawDescGZIP(), []int{0}
 }
@@ -68,7 +62,6 @@ func (x *HelloRequest) GetName() string {
 	return ""
 }
 
-// The response message containing the greetings
 type HelloReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -104,7 +97,6 @@ func (x *HelloReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
 func (*HelloReply) Descriptor() ([]byte, []int) {
 	return file_examples_helloworld_helloworld_helloworld_proto_rawDescGZIP(), []int{1}
 }

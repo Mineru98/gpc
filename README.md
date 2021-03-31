@@ -15,7 +15,11 @@ Golang Process Command
 go env -w GO111MODULE=auto
 set GOPATH=E:\SourceCode\gpc
 set GOBIN=E:\SourceCode\gpc\bin
-set Path=%PATH%;%GOPATH%/bin
+set Path=%PATH%;%GOPATH%\bin
+
+setx GOPATH E:\SourceCode\gpc
+setx GOBIN E:\SourceCode\gpc\bin
+setx Path %PATH%;%GOPATH%\bin
 ```
 
 ```shell

@@ -121,8 +121,10 @@ func main() {
 			switch *modeArg {
 			case "Master", "master", "M", "m":
 				if env.Debug {
-					if runtime.GOOS == "Windows" {
-						runCmd := exec.Command("go", "run", "cmd/master.go", "run")
+					if runtime.GOOS == "windows" {
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "master.go")
+						runCmd := exec.Command("go", "run", script, "run")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -133,12 +135,9 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						ex, err := os.Executable()
-						if err != nil {
-							log.Fatal(err)
-						}
-						dir := path.Dir(ex)
-						script := "'go run " + dir + "/master.go run'"
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "master.go")
+						script = "'go run " + script + " run'"
 						runCmd := exec.Command("nohup", "sh", "-c", script, ">", "/dev/null", "2>&1", "&")
 						fmt.Println(runCmd)
 						stdout, err := runCmd.StdoutPipe()
@@ -152,8 +151,10 @@ func main() {
 						fmt.Println(string(bResult))
 					}
 				} else {
-					if runtime.GOOS == "Windows" {
-						runCmd := exec.Command("cmd.exe", "/c", "master.vbs", "run")
+					if runtime.GOOS == "windows" {
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "master.vbs")
+						runCmd := exec.Command("cmd.exe", "/c", script, "run")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -164,8 +165,10 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						exec.Command("echo test2")
-						runCmd := exec.Command("nohup", "sh", "-c", "'./master", "run'", ">", "/dev/null", "2>&1", "&")
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "master")
+						script = "'go run " + script + " run'"
+						runCmd := exec.Command("nohup", "sh", "-c", script, ">", "/dev/null", "2>&1", "&")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -179,8 +182,11 @@ func main() {
 				}
 			case "Slave", "slave", "S", "s":
 				if env.Debug {
-					if runtime.GOOS == "Windows" {
-						runCmd := exec.Command("go", "run", "cmd/slave.go", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+					if runtime.GOOS == "windows" {
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "slave.go")
+						script = "'go run " + script + " run'"
+						runCmd := exec.Command("go", "run", script, "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -191,7 +197,9 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						runCmd := exec.Command("nohup", "./slave-cmd.sh", "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "slave-cmd.sh")
+						runCmd := exec.Command("nohup", script, "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -203,8 +211,10 @@ func main() {
 						fmt.Println(string(bResult))
 					}
 				} else {
-					if runtime.GOOS == "Windows" {
-						runCmd := exec.Command("cmd.exe", "/c", "slave.vbs", "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
+					if runtime.GOOS == "windows" {
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "slave.vbs")
+						runCmd := exec.Command("cmd.exe", "/c", script, "run", "-a", *modeIpAddressArg, "-p", *modePortArg)
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -215,7 +225,9 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						runCmd := exec.Command("nohup", "./slave", "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
+						_, filename, _, _ := runtime.Caller(0)
+						script := path.Join(path.Dir(filename), "slave")
+						runCmd := exec.Command("nohup", script, "run", "-a", *modeIpAddressArg, "-p", *modePortArg, ">", "/dev/null", "2>&1", "&")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()

@@ -32,27 +32,15 @@ func MasterMode(master Master, ip string, port string) {
 	fmt.Println("Started GPC Master Mode Service")
 	master.ip = ip
 	master.port = port
-	l, err := net.Listen("tcp", ip+":"+port)
+	lis, err := net.Listen("tcp", ip+":"+port)
 	if nil != err {
 		log.Fatalf("fail to bind address to %v; err: %v", port, err)
 	}
-	defer l.Close()
-
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
-	if err := s.Serve(l); err != nil {
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-
-	// for {
-	// 	conn, err := l.Accept()
-	// 	if nil != err {
-	// 		log.Printf("fail to accept; err: %v", err)
-	// 		continue
-	// 	}
-
-	// 	go network.ConnHandler(conn)
-	// }
 }
 
 func init() {
