@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 	"runtime"
 
 	"../env"
@@ -132,8 +133,14 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						exec.Command("echo test")
-						runCmd := exec.Command("nohup", "./master-cmd.sh", "run", ">", "/dev/null", "2>&1", "&")
+						ex, err := os.Executable()
+						if err != nil {
+							log.Fatal(err)
+						}
+						dir := path.Dir(ex)
+						script := "'go run " + dir + "/master.go run'"
+						runCmd := exec.Command("nohup", "sh", "-c", script, ">", "/dev/null", "2>&1", "&")
+						fmt.Println(runCmd)
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
@@ -157,7 +164,8 @@ func main() {
 						bResult, _ := ioutil.ReadAll(stdout)
 						fmt.Println(string(bResult))
 					} else {
-						runCmd := exec.Command("nohup", "./master", ">", "/dev/null", "2>&1", "&")
+						exec.Command("echo test2")
+						runCmd := exec.Command("nohup", "sh", "-c", "'./master", "run'", ">", "/dev/null", "2>&1", "&")
 						stdout, err := runCmd.StdoutPipe()
 
 						err = runCmd.Start()
