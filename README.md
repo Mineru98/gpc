@@ -13,13 +13,13 @@ Golang Process Command
 ```shell
 // windows
 go env -w GO111MODULE=auto
-set GOPATH=E:\SourceCode\gpc
-set GOBIN=E:\SourceCode\gpc\bin
+set GOPATH=[PATH]\gpc
+set GOBIN=[PATH]\gpc\bin
 set Path=%PATH%;%GOPATH%\bin
 
-setx GOPATH E:\SourceCode\gpc
-setx GOBIN E:\SourceCode\gpc\bin
-setx Path %PATH%;%GOPATH%\bin
+setx GOPATH [PATH]\gpc
+setx GOBIN [PATH]\gpc\bin
+setx Path %PATH%;[PATH]\gpc\bin
 ```
 
 ```shell
@@ -58,6 +58,7 @@ go build -o ./dist/gpc gpc.go
 ```
 
 ## gopls setting
+
 ```json
 {
     ...,
