@@ -40,7 +40,7 @@ go get google.golang.org/protobuf/cmd/protoc-gen-go
 go get google.golang.org/grpc
 go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go get golang.org/x/sys
-cd src
+
 go get -u github.com/akamensky/argparse
 go get -u github.com/jaypipes/ghw
 go get -u github.com/mitchellh/go-ps
@@ -48,23 +48,29 @@ go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 go get -u google.golang.org/grpc
 go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go get -u golang.org/x/sys
-cd ..
+
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+go install google.golang.org/protobuf/cmd/protoc-gen-go
 ```
 
 ## Build
 
-```shell
+````shell
+# golang
 go build -o ./dist/gpc gpc.go
-```
+
+# proto
+protoc --go_out=.  --go-grpc_out=. *.proto
 
 ## gopls setting
 
 ```json
 {
     ...,
-    "gopls": {
+   "gopls": {
         "build.experimentalWorkspaceModule": true,
         "build.expandWorkspaceToModule": false,
+        "build.allowModfileModifications": true
     }
 }
-```
+````

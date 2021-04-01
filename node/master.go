@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	pb "../utils/define"
+	pb "../utils/proto"
 	"google.golang.org/grpc"
 )
 
@@ -37,7 +37,7 @@ func MasterMode(master Master, ip string, port string) {
 		log.Fatalf("fail to bind address to %v; err: %v", port, err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &server{})
+	pb.RegisterGPCServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	pb "../utils/define"
+	pb "../utils/proto"
 	"google.golang.org/grpc"
 )
 
@@ -16,13 +16,14 @@ type SlaveNode interface {
 }
 
 type Slave struct {
-	id   int
+	id   string
 	ip   string
 	port string
 }
 
 func SlaveMode(slave Slave, ip, port, t_ip, t_port string) {
 	fmt.Println("Started GPC Slave Mode Service")
+	slave.id = "1"
 	slave.ip = ip
 	slave.port = port
 	conn, err := grpc.Dial(t_ip+":"+t_port, grpc.WithInsecure(), grpc.WithBlock())
@@ -30,7 +31,7 @@ func SlaveMode(slave Slave, ip, port, t_ip, t_port string) {
 		log.Fatalf("failed to connect to server")
 	}
 	defer conn.Close()
-	c := pb.NewGreeterClient(conn)
+	c := pb.NewGPCClient(conn)
 
 	name := "gpc"
 	if len(os.Args) > 1 {
