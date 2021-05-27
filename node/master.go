@@ -20,7 +20,7 @@ type Master struct {
 }
 
 type server struct {
-	pb.UnimplementedGreeterServer
+	pb.UnimplementedGPCServer
 }
 
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {

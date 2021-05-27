@@ -1,8 +1,12 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "io.grpc.mineru.gpc";
+option java_outer_classname = "GPCProto";
+option objc_class_prefix = "RTG";
 option go_package = "utils/proto";
 
-package proto;
+package gpc;
 
 service GPC {
   rpc SayHello (HelloRequest) returns (HelloReply) {}

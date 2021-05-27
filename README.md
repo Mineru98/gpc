@@ -48,19 +48,24 @@ go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 go get -u google.golang.org/grpc
 go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go get -u golang.org/x/sys
-
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
-go install google.golang.org/protobuf/cmd/protoc-gen-go
 ```
 
 ## Build
 
-````shell
+```shell
 # golang
 go build -o ./dist/gpc gpc.go
+go build -o ./dist/master master.go
+go build -o ./dist/slave slave.go
+```
 
+```shell
 # proto
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+go install google.golang.org/protobuf/cmd/protoc-gen-go
+
 protoc --go_out=.  --go-grpc_out=. *.proto
+```
 
 ## gopls setting
 

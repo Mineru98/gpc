@@ -32,7 +32,7 @@ func NewGPCClient(cc grpc.ClientConnInterface) GPCClient {
 
 func (c *gPCClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
 	out := new(HelloReply)
-	err := c.cc.Invoke(ctx, "/proto.GPC/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/gpc.GPC/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *gPCClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc
 
 func (c *gPCClient) CallProgram(ctx context.Context, in *ProgramCallRequest, opts ...grpc.CallOption) (*ProgramCallReply, error) {
 	out := new(ProgramCallReply)
-	err := c.cc.Invoke(ctx, "/proto.GPC/CallProgram", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/gpc.GPC/CallProgram", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _GPC_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.GPC/SayHello",
+		FullMethod: "/gpc.GPC/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GPCServer).SayHello(ctx, req.(*HelloRequest))
@@ -108,7 +108,7 @@ func _GPC_CallProgram_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.GPC/CallProgram",
+		FullMethod: "/gpc.GPC/CallProgram",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GPCServer).CallProgram(ctx, req.(*ProgramCallRequest))
@@ -120,7 +120,7 @@ func _GPC_CallProgram_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GPC_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.GPC",
+	ServiceName: "gpc.GPC",
 	HandlerType: (*GPCServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
