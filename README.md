@@ -25,8 +25,8 @@ setx Path %PATH%;[PATH]\gpc\bin
 ```shell
 // mac os
 go env -w GO111MODULE=auto
-go env -w GOPATH=/Users/imgeunseog/Documents/Github/gpc
-go env -w GOBIN=/Users/imgeunseog/Documents/Github/gpc/bin
+go env -w GOPATH=~/Documents/Github/gpc
+go env -w GOBIN=~/Documents/Github/gpc/bin
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
